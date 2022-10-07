@@ -39,7 +39,7 @@ ROOTFS_FORMAT=squash
 # Image type for installer image
 INSTALLER_IMG_FORMAT=raw
 # SSH port to use for running images live
-SSH_PORT=2222
+SSH_PORT=8222
 # ports to proxy into a running EVE instance (in ssh notation with -L)
 SSH_PROXY=-L6000:localhost:6000
 # ssh key to be used for getting into an EVE instance
@@ -208,7 +208,7 @@ QEMU_TPM_DEVICE_riscv64=tpm-tis
 QEMU_OPTS_TPM_Y_$(ZARCH)=-chardev socket,id=chrtpm,path=$(CURRENT_SWTPM)/swtpm-sock -tpmdev emulator,id=tpm0,chardev=chrtpm -device $(QEMU_TPM_DEVICE_$(ZARCH)),tpmdev=tpm0
 QEMU_OPTS_TPM=$(QEMU_OPTS_TPM_$(TPM:%=Y)_$(ZARCH))
 
-QEMU_OPTS_amd64=-smbios type=1,serial=31415926
+QEMU_OPTS_amd64=-smbios type=1,serial=33415926 -drive file=/tmp/nvm.img,if=none,id=nvm -device nvme,serial=deadbeef,drive=nvm
 QEMU_OPTS_arm64=-smbios type=1,serial=31415926 -drive file=fat:rw:$(dir $(DEVICETREE_DTB)),label=QEMU_DTB,format=vvfat
 QEMU_OPTS_riscv64=-kernel $(UBOOT_IMG)/u-boot.bin -device virtio-blk,drive=uefi-disk
 QEMU_OPTS_COMMON= -m $(QEMU_MEMORY) -smp 4 -display none $(QEMU_OPTS_BIOS) \
@@ -420,7 +420,7 @@ run-installer-net: $(BIOS_IMG) $(IPXE_IMG) $(DEVICETREE_DTB) $(SWTPM)
 
 # run MUST NOT change the current dir; it depends on the output being correct from a previous build
 run-live run: $(BIOS_IMG) $(DEVICETREE_DTB) $(SWTPM)
-	$(QEMU_SYSTEM) $(QEMU_OPTS) -drive file=$(CURRENT_IMG),format=$(IMG_FORMAT),id=uefi-disk
+	$(QEMU_SYSTEM) $(QEMU_OPTS) -drive file=$(CURRENT_IMG),format=$(IMG_FORMAT),if=none,id=uefi-disk -device nvme,serial=deadbeef2,drive=uefi-disk
 
 run-target: $(BIOS_IMG) $(DEVICETREE_DTB) $(SWTPM)
 	$(QEMU_SYSTEM) $(QEMU_OPTS) -drive file=$(TARGET_IMG),format=$(IMG_FORMAT)

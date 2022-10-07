@@ -4,3 +4,4 @@
 #    keytype, base64-encoded key, comment
 # format. E.g.:
 #    ssh-rsa AAAAB3NzaC1yc2EAAAADA foo@acme.corp
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHFp6sRfpZxTKP3LGRl75+HwoXNFztz05ii6HhwRYDFy jsfakian@yuri-dev-do-not-delete-02
