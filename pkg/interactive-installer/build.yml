@@ -1,16 +1,19 @@
 org: lfedge
-image: eve-mkimage-raw-efi
+image: eve-interactive-installer
+network: yes
 config:
   pid: host
   binds:
     - /:/hostfs
     - /lib/modules:/lib/modules
-    - /dev:/dev
     - /run:/run
-    - /var:/var
+    - /tmp:/tmp
+    - /dev:/dev
     - /persist:/persist:rshared,rbind
     - /config:/config:rshared,rbind
     - /containers:/containers:rshared,rbind
+    - /sys/devices:/sys/devices
+    - /sys/class:/sys/class
   devices:
     # all block devices
     - path: all

@@ -119,3 +119,4 @@ CMD []
 WORKDIR /EFI/BOOT
 COPY --from=grub-build /grub-lib/BOOT* ./
 COPY rootfs.cfg grub.cfg
+COPY rootfs-installer.cfg grub-installer.cfg

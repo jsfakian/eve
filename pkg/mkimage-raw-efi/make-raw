@@ -87,7 +87,7 @@ INITRD_IMG=/parts/initrd.img
 # content of installer ECO (optional)
 INSTALLER_IMG=/parts/installer.img
 # GRUB cfg override for our installer
-INSTALLER_GRUB_CFG=/parts/grub.cfg
+INSTALLER_GRUB_CFG=/parts/grub-installer.cfg
 # IMX8 flash blob that needs to be written to image
 IMX8_BLOB=/parts/imx8-flash.bin
 # IMX8 configuration file with flashing parameters
