@@ -2856,6 +2856,7 @@ func handlePhysicalIOAdapterListImpl(ctxArg interface{}, key string,
 				if err != nil {
 					log.Fatal("Failed to create VF for iface with PCI address", ib.PciLong)
 				}
+				log.Noticef("Number of VFs created %d device %s", ib.Vfs.Count, ifName)
 
 				vfs, err := sriov.GetVfByTimeout(150*time.Second, ifName, ib.Vfs.Count)
 				if err != nil {
