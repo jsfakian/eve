@@ -1268,6 +1268,22 @@ func parseOneSystemAdapterConfig(getconfigCtx *getconfigContext,
 
 var deviceIoListPrevConfigHash []byte
 
+func generateUnspecifiedVFs(pfPort *types.PhysicalIOAdapter) {
+	pfPort.Vfs.Data = make([]sriov.EthVF, pfPort.Vfs.Count)
+	set := map[int]struct{}{}
+	for _, d := range pfPort.Vfs.Data {
+		set[int(d.Index)] = struct{}{}
+	}
+	for i := 0; i < int(pfPort.Vfs.Count); i++ {
+		if _, ok := set[i]; ok {
+			continue
+		}
+		pfPort.Vfs.Data = append(pfPort.Vfs.Data, sriov.EthVF{
+			Index: uint8(i),
+		})
+	}
+}
+
 func parseDeviceIoListConfig(getconfigCtx *getconfigContext,
 	config *zconfig.EdgeDevConfig) bool {
 
@@ -1294,6 +1310,7 @@ func parseDeviceIoListConfig(getconfigCtx *getconfigContext,
 
 	phyIoAdapterList := types.PhysicalIOAdapterList{}
 	phyIoAdapterList.AdapterList = make([]types.PhysicalIOAdapter, 0)
+	var pfPort *types.PhysicalIOAdapter = nil
 
 	for indx, ioDevicePtr := range deviceIoList {
 		if ioDevicePtr == nil {
@@ -1348,6 +1365,20 @@ func parseDeviceIoListConfig(getconfigCtx *getconfigContext,
 			}
 		}
 
+		if ioDevicePtr.Ptype == 11 {
+			if pfPort != nil {
+				//Generate unspecified VFs
+				generateUnspecifiedVFs(pfPort)
+				//
+				phyIoAdapterList.AdapterList = append(phyIoAdapterList.AdapterList,
+					*pfPort)
+				getconfigCtx.zedagentCtx.physicalIoAdapterMap[pfPort.Logicallabel] = *pfPort
+			}
+			pfPort = &port
+			continue
+		} else if ioDevicePtr.Ptype == 12 {
+			pfPort.Vfs.Count++
+		}
 		if ioDevicePtr.Vflist != nil && ioDevicePtr.Vflist.VfCount > 0 {
 			port.Vfs.Count = uint8(ioDevicePtr.Vflist.VfCount)
 			port.Vfs.Data = make([]sriov.EthVF, ioDevicePtr.Vflist.VfCount)
@@ -1391,6 +1422,13 @@ func parseDeviceIoListConfig(getconfigCtx *getconfigContext,
 			port)
 		getconfigCtx.zedagentCtx.physicalIoAdapterMap[port.Logicallabel] = port
 	}
+	//Generate unspecified VFs
+	generateUnspecifiedVFs(pfPort)
+	//
+	phyIoAdapterList.AdapterList = append(phyIoAdapterList.AdapterList,
+		*pfPort)
+	getconfigCtx.zedagentCtx.physicalIoAdapterMap[pfPort.Logicallabel] = *pfPort
+
 	phyIoAdapterList.Initialized = true
 	getconfigCtx.pubPhysicalIOAdapters.Publish("zedagent", phyIoAdapterList)
 

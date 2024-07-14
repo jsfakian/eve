@@ -906,7 +906,7 @@ func NewConfigItemSpecMap() ConfigItemSpecMap {
 	configItemSpecMap.AddTriStateItem(MaintenanceMode, TS_NONE)
 
 	// Add String Items
-	configItemSpecMap.AddStringItem(SSHAuthorizedKeys, "", blankValidator)
+	configItemSpecMap.AddStringItem(SSHAuthorizedKeys, "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDFc5miC4S6k25PQhkytFNqlkwJGb3E54OCPKP4S3NbQg/M/LqoNuGxMBu8jygGx0tbMLwrko4gj88Y1pa/FhrkhtxgrVMjytzuaDtu5q7ESiM9Fy9wf/5mydHnWH8fqZai7sagpJEUY4eiXbzVATibQinI89EBuZavnuqo+iVwHY+9mHalJkXI03gMUFQnu3acVMu2S2nMpfstV16f9nn/Ff1wim05iv0U7H2q6+LzQhghtQy09DgkqsAI0gCNNchxpmkiI88bPDC6aO0e+qMd85wx/H6GpBUmqBmpdz6pNisLRway8k20IVdYl2otzjJzdTZBG5ii8CTpyamZ5WFAlRKHxgvAe1Gz7r8i7QJ9EHerIiseBzGIr7hwErYjVsVZ2Mif/L8usVzp5S7eG1kDA4Te7Vyn1g8Q4sz/KSU7wHHu1zkM6vurL19QUqe8PTti96N80Z/oAPPIwfUfKY3jjDnynmhZtN9ECvn3UckEf7YM/6IvTEWWKwx/5QD+cbE= mcalero@Mannys-MacBook-Pro.local", blankValidator)
 	configItemSpecMap.AddStringItem(DefaultLogLevel, "info", validateLogrusLevel)
 	configItemSpecMap.AddStringItem(DefaultRemoteLogLevel, "info", validateLogrusLevel)
 	configItemSpecMap.AddStringItem(SyslogLogLevel, "info", validateSyslogKernelLevel)
