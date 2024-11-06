@@ -22,6 +22,7 @@ type DownloaderConfig struct {
 	Size        uint64 // In bytes
 	FinalObjDir string // final Object Store
 	RefCount    uint
+	LastRetry   time.Time
 }
 
 func (config DownloaderConfig) Key() string {
@@ -116,6 +117,8 @@ type DownloaderStatus struct {
 	RetryCount int
 	// We save the original error when we do a retry
 	OrigError string
+	// Used only when image verification fails after the download
+	LastRetry time.Time
 }
 
 func (status DownloaderStatus) Key() string {

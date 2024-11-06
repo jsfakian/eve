@@ -46,6 +46,7 @@ type BlobStatus struct {
 	Progress uint
 	// ErrorAndTimeWithSource provide common error handling capabilities
 	ErrorAndTimeWithSource
+	RetryCount uint32
 }
 
 // Key returns the pubsub Key.
