@@ -14,14 +14,27 @@
 <div class="page">
 
     <header>
-        <div class="left">
-            <h1>Node Health Dashboard</h1>
-            <div class="subtitle">
-                Node: <strong>{{ .NodeID }}</strong>
+        <div>
+            <div class="title">
+                Node Health Dashboard
+                <!-- JS will override this text with report.node_id -->
+                <span class="badge" id="node-id">node: {{ .NodeID }}</span>
+            </div>
+            <div class="row">
+                <div id="overall-status-pill" class="pill">
+                    <span>Overall status:</span>
+                    <span id="overall-status-text">—</span>
+                </div>
+                <div class="timestamp" id="generated-at">Generated at: —</div>
             </div>
         </div>
-        <div class="right">
-            <button id="refresh-btn">⟳ Refresh</button>
+        <div class="actions">
+            <span class="badge-small" id="safe-to-deploy-pill">
+                Safe to deploy: —
+            </span>
+            <button id="refresh-btn">
+                ⟳ Refresh
+            </button>
         </div>
     </header>
 
@@ -35,11 +48,89 @@
 
     <!-- Content -->
     <div id="content">
-        <!-- JS will populate these sections -->
-        <div id="tab-overview" class="tab-content"></div>
-        <div id="tab-components" class="tab-content hidden"></div>
-        <div id="tab-apps" class="tab-content hidden"></div>
-        <div id="tab-raw" class="tab-content hidden"></div>
+        <!-- Overview tab -->
+        <div id="tab-overview" class="tab-content">
+            <div class="row">
+                <div id="score-circle" class="score-circle">
+                    --
+                </div>
+                <div>
+                    <div id="status-label" style="font-weight:500;font-size:0.95rem;">
+                        Status: —
+                    </div>
+                    <div class="muted" id="summary-text">
+                        Node health summary will appear here.
+                    </div>
+                </div>
+            </div>
+            <h3 style="margin-top:12px;font-size:0.9rem;">Main issues</h3>
+            <ul class="list" id="main-issues-list">
+                <li class="muted">No issues detected.</li>
+            </ul>
+        </div>
+
+        <!-- Components tab -->
+        <div id="tab-components" class="tab-content hidden">
+            <div class="grid">
+                <div class="card" id="comp-cpu">
+                    <h3>CPU</h3>
+                    <div class="status" data-status-text>—</div>
+                    <ul class="list" data-issues-list></ul>
+                </div>
+                <div class="card" id="comp-memory">
+                    <h3>Memory</h3>
+                    <div class="status" data-status-text>—</div>
+                    <ul class="list" data-issues-list></ul>
+                </div>
+                <div class="card" id="comp-storage">
+                    <h3>Storage</h3>
+                    <div class="status" data-status-text>—</div>
+                    <ul class="list" data-issues-list></ul>
+                </div>
+                <div class="card" id="comp-network">
+                    <h3>Network</h3>
+                    <div class="status" data-status-text>—</div>
+                    <ul class="list" data-issues-list></ul>
+                </div>
+                <div class="card" id="comp-thermal">
+                    <h3>Thermal</h3>
+                    <div class="status" data-status-text>—</div>
+                    <ul class="list" data-issues-list></ul>
+                </div>
+                <div class="card" id="comp-psu">
+                    <h3>PSU</h3>
+                    <div class="status" data-status-text>—</div>
+                    <ul class="list" data-issues-list></ul>
+                </div>
+            </div>
+
+            <h3 style="margin-top:12px;font-size:0.9rem;">Replacement recommendations</h3>
+            <div class="muted" id="replacement-comment">—</div>
+            <ul class="list" id="replacement-list"></ul>
+        </div>
+
+        <!-- Apps tab -->
+        <div id="tab-apps" class="tab-content hidden">
+            <div class="two-columns">
+                <div>
+                    <h3 style="font-size:0.9rem;">Apps to migrate</h3>
+                    <ul class="list" id="apps-migrate">
+                        <li class="muted">None identified.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 style="font-size:0.9rem;">Apps safe to stay</h3>
+                    <ul class="list" id="apps-safe">
+                        <li class="muted">No apps listed.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Raw JSON tab -->
+        <div id="tab-raw" class="tab-content hidden">
+            <pre id="raw-json">{}</pre>
+        </div>
     </div>
 
     <div id="error-banner" class="error-banner"></div>

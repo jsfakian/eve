@@ -4,9 +4,9 @@ rm -rf /run/*
 mkdir -p /run/sshd
 mkdir -p /run/nginx
 
-nginx
-
 /usr/sbin/sshd -h /root/.ssh/id_rsa
+
+cd /root && ./evefd &
 
 echo "Started evefd"
 

@@ -378,8 +378,8 @@ func analyzeApps(raw NodeRawMetrics, cpu CPUComponent, mem MemoryComponent, stor
 	var appsSafe []AppSafeToStay
 
 	for _, app := range raw.Apps {
-		heavyCPU := app.CPUPercent > 70
-		heavyMem := app.MemoryGB > 8
+		heavyCPU := app.CPUPercent > 0.70
+		heavyMem := app.MemoryGB > 2.0
 		writeHeavy := app.IOProfile == "high_write"
 
 		reasons := []string{}
